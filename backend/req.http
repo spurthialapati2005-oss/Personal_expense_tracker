@@ -1,0 +1,21 @@
+### users data to post
+POST http://localhost:4000/auth-api/auth
+Content-Type: application/json
+
+{
+    "username":"Sidhvi",
+    "email":"akulasidhvi@gmail.com",
+    "number":9963046249,
+    "password":"Sidhvi@6106",
+    "monthlyIncome":100000
+}
+
+### posting the transactions data
+POST http://localhost:4000/transactions-api/transactions
+
+###getting transaction details
+GET http://localhost:4000/transactions-api/transactions
+
+### getting analysis of the tranactions
+GET http://localhost:4000/analytics-api/analytics
+

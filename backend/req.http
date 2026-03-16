@@ -1,21 +1,55 @@
-### users data to post
+### user registration
 POST http://localhost:4000/auth-api/auth
 Content-Type: application/json
 
 {
-    "username":"Sidhvi",
-    "email":"akulasidhvi@gmail.com",
-    "number":9963046249,
-    "password":"Sidhvi@6106",
-    "monthlyIncome":100000
+    "username":"max",
+    "email":"max@gmail.com",
+    "number":393893123,
+    "password":"max@123",
+    "monthlyIncome":170000
+}
+
+### user login
+POST http://localhost:4000/auth-api/auth/login
+Content-Type: application/json
+
+{
+    "email":"max@gmail.com",
+    "password":"max@123"
 }
 
 ### posting the transactions data
-POST http://localhost:4000/transactions-api/transactions
+POST http://localhost:4000/transactions-api/transactions/69b7d5f910b0c1d36bf5a9c5
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "category": "Groceries",
+  "date": "2026-03-16",
+  "description": "daily grocery shopping"
+}
 
 ###getting transaction details
-GET http://localhost:4000/transactions-api/transactions
+GET http://localhost:4000/transactions-api/transactions/69b7c5e9c3b3856b46fe5e8f
 
 ### getting analysis of the tranactions
-GET http://localhost:4000/analytics-api/analytics
+GET http://localhost:4000/analytics-api/overall-analysis/69b7c5e9c3b3856b46fe5e8f
+
+### posting the emi details
+POST http://localhost:4000/emi-api/emi
+Content-Type: application/json
+
+{
+  "loanAmount": 100000,
+  "interestRate": 1.5,
+  "tenureMonths": 15,
+  "startDate": "2024-06-01",
+  "dueDate": "2029-06-01",
+  "status": "Active",
+  "userId":"69b7c5e9c3b3856b46fe5e8f"
+}
+
+### getting the emi details
+GET http://localhost:4000/emi-api/emi/69b7c5e9c3b3856b46fe5e8f
 

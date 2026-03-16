@@ -2,38 +2,38 @@ import exp from 'express';
 import mongoose from 'mongoose';
 import Transaction from '../models/Transaction.js';
 import EMI from '../models/EMI.js';
+import { checkUser } from '../middleware/checkUser.js';
 
 export const analyticsRouter = exp.Router();
 
-analyticsRouter.get('/overall-analysis/:userId', async (req, res) => {
+analyticsRouter.get('/overall-analysis/:userid', checkUser, async (req, res) => {
 
     try {
 
-        const userId = new mongoose.Types.ObjectId(req.params.userId);
+        const userId = new mongoose.Types.ObjectId(req.params.userid);
 
-        // 1️⃣ Transaction totals by category for this user
+        // Transaction totals by category
         const transactionData = await Transaction.aggregate([
             { $match: { userId: userId } },
-            { 
-                $group: { 
-                    _id: "$category", 
-                    total: { $sum: "$amount" } 
-                } 
+            {
+                $group: {
+                    _id: "$category",
+                    total: { $sum: "$amount" }
+                }
             }
         ]);
 
-        // 2️⃣ EMI totals for this user
+        // EMI totals
         const emiData = await EMI.aggregate([
             { $match: { userId: userId } },
-            { 
-                $group: { 
-                    _id: "Fixed EMIs", 
-                    total: { $sum: "$loanAmount" } 
-                } 
+            {
+                $group: {
+                    _id: "Fixed EMIs",
+                    total: { $sum: "$loanAmount" }
+                }
             }
         ]);
 
-        // 3️⃣ Combine both results
         const finalData = [...transactionData, ...emiData];
 
         res.status(200).json({
@@ -42,8 +42,6 @@ analyticsRouter.get('/overall-analysis/:userId', async (req, res) => {
         });
 
     } catch (err) {
-
-        console.error("Analytics Error:", err.message);
 
         res.status(500).json({
             message: "Error generating analysis",

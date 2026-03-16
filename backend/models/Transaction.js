@@ -11,11 +11,6 @@ const transactionSchema = new Schema({
     type: String,
     required: true
   },
-  userId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true
-    },
 
   date: {
     type: Date,
@@ -24,7 +19,12 @@ const transactionSchema = new Schema({
 
   description: {
     type: String
-  }
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
 });
 
 const Transaction = model("Transaction", transactionSchema);

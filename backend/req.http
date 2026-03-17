@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### posting the transactions data
-POST http://localhost:4000/transactions-api/transactions/69b7d5f910b0c1d36bf5a9c5
+POST http://localhost:4000/transactions-api/transactions
 Content-Type: application/json
 
 {
@@ -31,13 +31,13 @@ Content-Type: application/json
 }
 
 ###getting transaction details
-GET http://localhost:4000/transactions-api/transactions/69b7d5f910b0c1d36bf5a9c5
+GET http://localhost:4000/transactions-api/transactions
 
 ### getting analysis of the tranactions
-GET http://localhost:4000/analytics-api/overall-analysis/69b7d5f910b0c1d36bf5a9c5
+GET http://localhost:4000/analytics-api/overall-analysis
 
 ### posting the emi details
-POST http://localhost:4000/emi-api/emi/69b7d5f910b0c1d36bf5a9c5
+POST http://localhost:4000/emi-api/emi
 Content-Type: application/json
 
 {
@@ -50,5 +50,5 @@ Content-Type: application/json
 }
 
 ### getting the emi details
-GET http://localhost:4000/emi-api/emi/69b7d5f910b0c1d36bf5a9c5
+GET http://localhost:4000/emi-api/emi
 

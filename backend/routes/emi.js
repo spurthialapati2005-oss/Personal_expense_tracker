@@ -6,13 +6,13 @@ export const emiRouter = exp.Router();
 
 
 // POST EMI
-emiRouter.post("/emi/:userid", checkUser, async (req, res) => {
+emiRouter.post("/emi", checkUser, async (req, res) => {
 
   try {
 
     const newEmi = new EMI({
       ...req.body,
-      userId: req.params.userid
+      userId: req.user._id
     });
 
     const savedEmi = await newEmi.save();
@@ -35,12 +35,12 @@ emiRouter.post("/emi/:userid", checkUser, async (req, res) => {
 
 
 // GET EMI OF USER
-emiRouter.get("/emi/:userid", checkUser, async (req, res) => {
+emiRouter.get("/emi", checkUser, async (req, res) => {
 
   try {
 
     const emiList = await EMI.find({
-      userId: req.params.userid
+      userId: req.user._id
     });
 
     res.status(200).json({

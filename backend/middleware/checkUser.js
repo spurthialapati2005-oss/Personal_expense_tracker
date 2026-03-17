@@ -18,16 +18,17 @@ export const checkUser = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid user" });
     }
     req.user = user;
-    if (req.user._id.toString() !== req.params.userid) {
-    return res.status(401).json({
-      message: "Unauthorized user id not matched"
-    });
+    console.log("User id :", req.user._id);
+
+  next();
+    // if (req.user._id.toString() !== req.params.userid) {
+    // return res.status(401).json({
+    //   message: "Unauthorized user id not matched"
+    // });
   }
-  console.log("User id :", req.user._id);
+  
 
-    next();
-
-  } catch (err) {
+   catch (err) {
     return res.status(401).json({ message: err.message });
   }
 };

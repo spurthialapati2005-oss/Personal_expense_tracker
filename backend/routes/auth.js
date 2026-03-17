@@ -2,6 +2,7 @@ import exp from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { checkUser } from "../middleware/checkUser.js";
+import bcrypt from "bcryptjs";
 
 export const authRouter = exp.Router();
 
@@ -134,3 +135,102 @@ authRouter.get("/auth/profile", checkUser, async (req, res) => {
   }
 
 });
+
+//edit profile details
+authRouter.put("/auth/profile", checkUser, async (req, res) => {
+  try {
+
+    const { username, monthlyIncome, number } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $set: {
+          ...(username && { username }),
+          ...(monthlyIncome && { monthlyIncome }),
+          ...(number && { number })
+        }
+      },
+      {
+        new: true,
+        runValidators: true   // ⭐ THIS IS THE FIX
+      }
+    );
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        number: updatedUser.number,
+        monthlyIncome: updatedUser.monthlyIncome
+      }
+    });
+
+  } catch (err) {
+
+    res.status(400).json({
+      message: err.message
+    });
+
+  }
+});
+
+//change password
+authRouter.put("/auth/change-password", checkUser, async (req, res) => {
+
+  try {
+
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid User"
+      });
+    }
+
+    // check current password
+    const isMatch = await user.comparePassword(currentPassword);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Current password is incorrect"
+      });
+    }
+
+    // hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password changed successfully"
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      message: "Failed to change password"
+    });
+
+  }
+
+});
+
+//logout
+authRouter.get('/logout', checkUser, async(req,res)=>{
+  try{
+    res.clearCookie("token");
+    console.log(req?.body?.user+" logged out ")
+
+    return res.status(200).json({ message: "User logged out" });
+
+  } catch (err) {
+    return res.status(400).json({message:"error in logout "+err.message})
+
+  }
+})

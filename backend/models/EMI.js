@@ -22,9 +22,9 @@ const emiSchema=new Schema({
         type:Date,
         required:true
     },
-    status:{
-        type:String,
-        required:true
+    isActive:{
+        type:Boolean,
+        default:true
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,

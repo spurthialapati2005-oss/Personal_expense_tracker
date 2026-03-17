@@ -20,6 +20,10 @@ const transactionSchema = new Schema({
   description: {
     type: String
   },
+  isActive:{
+    type:Boolean,
+    default:true
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

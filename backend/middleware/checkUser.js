@@ -21,10 +21,6 @@ export const checkUser = async (req, res, next) => {
     console.log("User id :", req.user._id);
 
   next();
-    // if (req.user._id.toString() !== req.params.userid) {
-    // return res.status(401).json({
-    //   message: "Unauthorized user id not matched"
-    // });
   }
   
 

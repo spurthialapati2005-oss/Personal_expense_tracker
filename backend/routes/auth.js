@@ -2,7 +2,7 @@ import exp from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { checkUser } from "../middleware/checkUser.js";
-import bcrypt from "bcryptjs";
+import bcrypt, { hash } from "bcryptjs";
 
 export const authRouter = exp.Router();
 
@@ -11,7 +11,11 @@ export const authRouter = exp.Router();
 authRouter.post("/auth", async (req, res) => {
   try {
 
-    const { username, email } = req.body;
+    const { username, email,password } = req.body;
+    const HashedPass = await bcrypt.hash(String(password), 10)
+    
+    console.log("req body in login ; ",req.body)
+
 
     // check if username exists
     const existingUsername = await User.findOne({ username });
@@ -28,16 +32,16 @@ authRouter.post("/auth", async (req, res) => {
         message: "Email already registered"
       });
     }
-
-    const newUser = new User(req.body);
-    const savedUser = await newUser.save();
-
-    const userResponse = savedUser.toObject();
-    delete userResponse.password;
+    const newUser = await User.create(
+        {
+            ...req.body,
+            password:HashedPass,
+        }
+    )
 
     res.status(201).json({
       message: "User Created Successfully",
-      payload: userResponse
+      payload: newUser
     });
 
   } catch (err) {
@@ -70,7 +74,7 @@ authRouter.post("/auth/login", async (req, res) => {
     }
 
     // compare password
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await bcrypt.compare(String(password), user.password);
 
     if (!isMatch) {
       return res.status(400).json({
@@ -179,10 +183,7 @@ authRouter.put("/auth/profile", checkUser, async (req, res) => {
 
 //change password
 authRouter.put("/auth/change-password", checkUser, async (req, res) => {
-
   try {
-
-    const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user._id);
 
@@ -192,16 +193,17 @@ authRouter.put("/auth/change-password", checkUser, async (req, res) => {
       });
     }
 
-    // check current password
-    const isMatch = await user.comparePassword(currentPassword);
+    const { currentPassword, newPassword } = req.body;
+
+    // ✅ FIXED
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
 
     if (!isMatch) {
       return res.status(400).json({
-        message: "Current password is incorrect"
+        message: "Password not matched"
       });
     }
 
-    // hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     user.password = hashedPassword;
@@ -213,12 +215,14 @@ authRouter.put("/auth/change-password", checkUser, async (req, res) => {
 
   } catch (err) {
 
+    console.error("Change Password Error:", err); // ⭐ add this
+
     res.status(500).json({
-      message: "Failed to change password"
+      message: "Failed to change password",
+      error: err.message
     });
 
   }
-
 });
 
 //logout

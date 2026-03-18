@@ -1,13 +1,13 @@
+import {config} from "dotenv"
+config() //process.env
 import exp from 'express'
 import {connect } from "mongoose"
-import {config} from "dotenv"
 import { authRouter } from './routes/auth.js'
 import { transactionRouter } from './routes/transactions.js'
 import { emiRouter } from './routes/emi.js'
 import { analyticsRouter } from './routes/analytics.js'
 import cookieParser from 'cookie-parser'
 
-config() //process.env
 const app=exp()
 //connect to db
 app.use(exp.json())

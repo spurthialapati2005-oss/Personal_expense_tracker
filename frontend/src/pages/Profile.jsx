@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFinanceContext } from "../context/FinanceContext";
 
 const Profile = () => {
@@ -8,6 +8,16 @@ const Profile = () => {
     number: user?.number || "",
     monthlyIncome: user?.monthlyIncome || 0
   });
+  useEffect(() => {
+    if (user) {
+      setForm({
+        username: user.username || "",
+        number: user.number || "",
+        monthlyIncome: user.monthlyIncome || 0
+      });
+    }
+  }, [user]);
+  console.log("User in Profile:", user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

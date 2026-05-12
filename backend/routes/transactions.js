@@ -33,7 +33,8 @@ transactionRouter.get('/transactions', checkUser, async (req, res) => {
   try {
 
     const transactions = await Transaction.find({
-      userId: req.user._id
+      userId: req.user._id,
+      isActive: true
     });
 
     return res.status(200).json({
@@ -54,7 +55,10 @@ transactionRouter.get('/transactions', checkUser, async (req, res) => {
 transactionRouter.get('/transactions/:id', checkUser, async (req, res) => {
   try {
 
-    const transaction = await Transaction.findById(req.params.id);
+    const transaction = await Transaction.findOne({
+      _id: req.params.id,
+      isActive: true
+    });
 
     if (!transaction) {
       return res.status(404).json({
@@ -86,9 +90,11 @@ transactionRouter.get('/transactions/:id', checkUser, async (req, res) => {
 // update a single transaction by id
 transactionRouter.put('/transactions/:id',checkUser,async(req,res)=>{
   try{
-    const transaction=await Transaction.findById(req.params.id);
-    
-    
+    const transaction=await Transaction.findOne({
+      _id: req.params.id,
+      isActive: true
+    });
+
     if (!transaction){
       return res.json({message:"transaction not found "});
     }
@@ -113,7 +119,10 @@ transactionRouter.put('/transactions/:id',checkUser,async(req,res)=>{
 //delete a transaction
 transactionRouter.patch('/transactions/:id',checkUser,async(req,res)=>{
   try{
-    const transaction=await Transaction.findById(req.params.id);
+    const transaction=await Transaction.findOne({
+      _id: req.params.id,
+      isActive: true
+    });
     const {isActive} = req.body;
     if (!transaction){
       return res.json({message:"transaction not found "});

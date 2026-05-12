@@ -326,7 +326,10 @@ analyticsRouter.get('/quick-health', checkUser, async (req, res) => {
     
     const [user, transactions, emis] = await Promise.all([
       User.findById(userId),
-      Transaction.find({ userId }),
+      Transaction.find({
+        userId,
+        isActive: true
+      }).sort({ date: -1 }),
       EMI.find({ userId })
     ])
 

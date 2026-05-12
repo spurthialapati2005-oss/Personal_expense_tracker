@@ -98,6 +98,7 @@ authRouter.post("/auth/login", async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        number: user.number,
         monthlyIncome: user.monthlyIncome
       }
     });
@@ -126,6 +127,7 @@ authRouter.get("/auth/profile", checkUser, async (req, res) => {
         id: req.user._id,
         username: req.user.username,
         email: req.user.email,
+        number: req.user.number,
         monthlyIncome: req.user.monthlyIncome
       }
     });

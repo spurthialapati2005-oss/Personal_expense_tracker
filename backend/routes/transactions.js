@@ -4,11 +4,27 @@ import { checkUser } from '../middleware/checkUser.js'
 
 export const transactionRouter = exp.Router()
 
-//add transaction
+// add transaction
 transactionRouter.post('/transactions', checkUser, async (req, res) => {
+
   try {
+
+    const {
+      amount,
+      category,
+      type,
+      date,
+      description,
+      merchant
+    } = req.body;
+
     const newTransaction = new Transaction({
-      ...req.body,
+      amount,
+      category,
+      type,
+      date,
+      description,
+      merchant, 
       userId: req.user._id
     });
 
@@ -21,10 +37,15 @@ transactionRouter.post('/transactions', checkUser, async (req, res) => {
 
   } catch (err) {
 
+    console.log(err.message);
+
     res.status(400).json({
-      message: "Failed to add transaction"
+      message: "Failed to add transaction",
+      error: err.message
     });
+
   }
+
 });
 
 

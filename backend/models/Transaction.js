@@ -20,6 +20,9 @@ const transactionSchema = new Schema({
   description: {
     type: String
   },
+  merchant: {
+    type: String
+  },
   isActive:{
     type:Boolean,
     default:true

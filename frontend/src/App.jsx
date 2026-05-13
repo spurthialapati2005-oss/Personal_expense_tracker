@@ -16,6 +16,9 @@ import Notification from "./pages/Notification";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import { useFinanceContext } from "./context/FinanceContext";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 const ProtectedRoutes = () => {
   const { token, fetchProfile } = useFinanceContext();

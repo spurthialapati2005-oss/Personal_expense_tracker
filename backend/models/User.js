@@ -31,7 +31,22 @@ const userSchema = new Schema({
   monthlyIncome: {
     type: Number,
     required: true
-  }
+  },
+  occupation: {
+    type: String,
+    default: "",
+  },
+
+  city: {
+    type: String,
+    default: "",
+  },
+
+  currency: {
+    type: String,
+    default: "INR",
+  },
+  
 },{
         timestamps:true,
         strict:"throw",

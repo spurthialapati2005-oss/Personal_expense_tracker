@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 export const authRouter = exp.Router();
 
 
-// REGISTER
+// Register
 authRouter.post("/auth", async (req, res) => {
   try {
 
@@ -59,7 +59,7 @@ authRouter.post("/auth", async (req, res) => {
 });
 
 
-// LOGIN
+// Login
 authRouter.post("/auth/login", async (req, res) => {
 
   try {
@@ -131,7 +131,7 @@ authRouter.post("/auth/login", async (req, res) => {
 });
 
 
-// GET PROFILE
+// Get Profile
 authRouter.get("/auth/profile", checkUser, async (req, res) => {
 
   try {
@@ -163,7 +163,7 @@ authRouter.get("/auth/profile", checkUser, async (req, res) => {
 });
 
 
-// UPDATE PROFILE
+// Update Profile
 authRouter.put("/auth/profile", checkUser, async (req, res) => {
 
   try {
@@ -231,7 +231,7 @@ authRouter.put("/auth/profile", checkUser, async (req, res) => {
 });
 
 
-// CHANGE PASSWORD
+// Change Password
 authRouter.put("/auth/change-password", checkUser, async (req, res) => {
 
   try {
@@ -284,7 +284,7 @@ authRouter.put("/auth/change-password", checkUser, async (req, res) => {
 });
 
 
-// LOGOUT
+// Logout
 authRouter.get("/logout", checkUser, async (req, res) => {
 
   try {

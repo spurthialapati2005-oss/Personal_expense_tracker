@@ -30,6 +30,7 @@ const menuItems = [
 
 const Sidebar = () => {
   const logout = useFinanceContext((state) => state.logout);
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -38,10 +39,15 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="hidden md:flex w-72 bg-white border-r border-slate-200 flex-col h-screen overflow-y-auto">
-      <div className="p-6 border-b border-slate-100">
-        <h2 className="text-2xl font-bold text-indigo-600 tracking-tight">ExpensePilot</h2>
-        <p className="text-sm text-slate-400 mt-1">Personal expense tracker</p>
+    <aside className="hidden md:flex w-72 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex-col h-screen overflow-y-auto">
+      <div className="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h2 className="text-2xl font-bold text-indigo-600 tracking-tight">
+          ExpensePilot
+        </h2>
+
+        <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
+          Personal expense tracker
+        </p>
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
@@ -52,24 +58,28 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
                 isActive
-                  ? "bg-indigo-50 text-indigo-700 font-semibold"
-                  : "text-slate-600 hover:bg-slate-50"
+                  ? "bg-indigo-50 dark:bg-slate-800 text-indigo-700 dark:text-indigo-400 font-semibold"
+                  : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               }`
             }
           >
             <item.icon size={18} />
+
             <span className="text-sm">{item.label}</span>
           </NavLink>
         ))}
       </nav>
 
-      <div className="p-4 border-t border-slate-100">
+      <div className="p-4 border-t border-slate-100 dark:border-slate-800">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-2xl transition-colors"
+          className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-2xl transition-colors"
         >
           <LogOut size={18} />
-          <span className="text-sm font-medium">Logout</span>
+
+          <span className="text-sm font-medium">
+            Logout
+          </span>
         </button>
       </div>
     </aside>

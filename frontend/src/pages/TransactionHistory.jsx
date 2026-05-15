@@ -49,12 +49,19 @@ const TransactionHistory = () => {
   };
 
   const submitEdit = async (e) => {
-    e.preventDefault();
-    const success = await updateTransaction(editor._id, editor);
-    if (success) {
-      setEditor(initialEditor);
-    }
-  };
+  e.preventDefault();
+
+  //console.log("EDITOR DATA:", editor);
+
+  const success = await updateTransaction(editor._id, {
+    ...editor,
+    amount: Number(editor.amount),
+  });
+
+  if (success) {
+    setEditor(initialEditor);
+  }
+};
 
   return (
     <div className="space-y-6">

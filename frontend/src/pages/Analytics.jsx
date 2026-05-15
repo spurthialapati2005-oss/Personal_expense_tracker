@@ -52,15 +52,18 @@ const Analytics = () => {
     const budget = user?.monthlyIncome || 0;
     const budgetUsage = budget ? currentMonthExpense / budget : 0;
 
+    const incomeTotal = incomeOnly.reduce((sum, item) => sum + item.amount,0);
+
     return {
-      expenses: expensesOnly.reduce((sum, item) => sum + item.amount, 0),
-      income: incomeOnly.reduce((sum, item) => sum + item.amount, 0) || user?.monthlyIncome || 0,
-      categoryData: categories,
-      trendLabels: Object.keys(trends),
-      trendValues: Object.values(trends),
-      predictedNextMonth,
-      currentMonthExpense,
-      budgetUsage
+      expenses: expensesOnly.reduce((sum, item) => sum + item.amount,0),
+      income:
+        (user?.monthlyIncome || 0) + incomeTotal,
+        categoryData: categories,
+        trendLabels: Object.keys(trends),
+        trendValues: Object.values(trends),
+        predictedNextMonth,
+        currentMonthExpense,
+        budgetUsage
     };
   }, [transactions, user?.monthlyIncome]);
 

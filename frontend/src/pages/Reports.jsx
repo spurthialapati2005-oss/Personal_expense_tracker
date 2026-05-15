@@ -35,12 +35,17 @@ const Reports = () => {
       return acc;
     }, {});
 
-    return {
-      filtered,
-      totalExpense: expenses.reduce((sum, item) => sum + item.amount, 0),
-      totalIncome: income.reduce((sum, item) => sum + item.amount, 0) || user?.monthlyIncome || 0,
-      byCategory
-    };
+    const incomeTotal = income.reduce(
+  (sum, item) => sum + item.amount,
+  0
+);
+
+  return {
+    filtered,
+    totalExpense: expenses.reduce((sum, item) => sum + item.amount,0),
+    totalIncome:(user?.monthlyIncome || 0) + incomeTotal,
+    byCategory
+  };
   }, [selectedMonth, transactions, user?.monthlyIncome]);
 
   const exportReport = () => {

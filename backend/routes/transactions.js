@@ -126,7 +126,19 @@ transactionRouter.put('/transactions/:id',checkUser,async(req,res)=>{
       });
     }
     console.log("body : ",req.body);
-    const updatedTransaction=await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    // const updatedTransaction=await Transaction.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const updatedTransaction = await Transaction.findByIdAndUpdate(
+      req.params.id,
+        {
+          amount: req.body.amount,
+          category: req.body.category,
+          type: req.body.type,
+          date: req.body.date,
+          description: req.body.description,
+          merchant: req.body.merchant,
+        },
+        { new: true }
+    )
      if (!updatedTransaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }

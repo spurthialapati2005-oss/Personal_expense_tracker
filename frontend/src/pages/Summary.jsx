@@ -9,8 +9,9 @@ const Summary = () => {
     const expenses = transactions.filter((item) => item.type !== "income");
     const income = transactions.filter((item) => item.type === "income");
     const totalSpent = expenses.reduce((sum, item) => sum + item.amount, 0);
-    const totalIncome = income.reduce((sum, item) => sum + item.amount, 0) || user?.monthlyIncome || 0;
+    const incomeTotal = income.reduce((sum, item) => sum + item.amount,0);
 
+    const totalIncome = (user?.monthlyIncome || 0) + incomeTotal;
     return {
       totalSpent,
       totalIncome,

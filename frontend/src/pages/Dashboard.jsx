@@ -15,10 +15,12 @@ const Dashboard = () => {
       .filter((item) => item.type === "income")
       .reduce((acc, curr) => acc + curr.amount, 0);
 
+    const finalIncome = (user?.monthlyIncome || 0) + incomeTotal;
+
     return {
       totalExpenses: expenseTotal,
-      totalIncome: incomeTotal || user?.monthlyIncome || 0,
-      balance: (incomeTotal || user?.monthlyIncome || 0) - expenseTotal,
+      totalIncome: finalIncome,
+      balance: finalIncome - expenseTotal,
       currentMonthExpense: transactions
         .filter((item) => item.type !== "income" && new Date(item.date).getMonth() === new Date().getMonth() && new Date(item.date).getFullYear() === new Date().getFullYear())
         .reduce((acc, curr) => acc + curr.amount, 0),

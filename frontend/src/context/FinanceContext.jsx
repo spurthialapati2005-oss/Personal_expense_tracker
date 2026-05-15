@@ -317,33 +317,74 @@ export const useFinanceContext = create((set, get) => ({
     }
   },
 
-  updateTransaction: async (id, formData) => {
-    const { token } = get();
-    if (!token) return false;
+  // updateTransaction: async (id, formData) => {
+  //   const { token } = get();
+  //   if (!token) return false;
 
-    set({ loading: true });
-    try {
-      const res = await api.put(
-        `/transactions-api/transactions/${id}`,
-        { ...formData, amount: Number(formData.amount) },
-        authHeaders(token)
-      );
+  //   set({ loading: true });
+  //   try {
+  //     const res = await api.put(
+  //       `/transactions-api/transactions/${id}`,
+  //       { ...formData, amount: Number(formData.amount) },
+  //       authHeaders(token)
+  //     );
 
-      set((state) => ({
-        transactions: state.transactions.map((item) =>
-          item._id === id ? res.data.payload : item
-        )
-      }));
-      get().refreshNotifications();
-      toast.success("Transaction updated");
-      return true;
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Update failed");
-      return false;
-    } finally {
-      set({ loading: false });
-    }
-  },
+  //     set((state) => ({
+  //       transactions: state.transactions.map((item) =>
+  //         item._id === id ? res.data.payload : item
+  //       )
+  //     }));
+  //     get().refreshNotifications();
+  //     toast.success("Transaction updated");
+  //     return true;
+  //   } catch (err) {
+  //     toast.error(err.response?.data?.message || "Update failed");
+  //     return false;
+  //   } finally {
+  //     set({ loading: false });
+  //   }
+  // },
+  updateTransaction: async (id, updatedData) => {
+  const { token } = get();
+
+  if (!token) {
+    toast.error("Please login first");
+    return false;
+  }
+
+  try {
+    const response = await api.put(
+      `/transactions-api/transactions/${id}`,
+      {
+        ...updatedData,
+        amount: Number(updatedData.amount),
+      },
+      authHeaders(token)
+    );
+
+    const updatedTransaction = response.data.payload;
+
+    set((state) => ({
+      transactions: state.transactions.map((item) =>
+        item._id === id ? updatedTransaction : item
+      ),
+    }));
+
+    get().refreshNotifications();
+
+    toast.success("Transaction updated");
+
+    return true;
+  } catch (error) {
+    console.error("Update transaction error:", error);
+
+    toast.error(
+      error.response?.data?.message || "Failed to update transaction"
+    );
+
+    return false;
+  }
+},
 
   toggleTransaction: async (id, isActive) => {
     const { token } = get();
